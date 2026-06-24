@@ -9,6 +9,9 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Ping Supabase
         run: |
           curl -s -o /dev/null -w "%{http_code}" \
@@ -18,3 +21,10 @@ jobs:
           
       - name: Log timestamp
         run: echo "Pinged at $(date -u)"
+
+      - name: Keep repository active
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: keep repo active [skip ci]"
+          git push
